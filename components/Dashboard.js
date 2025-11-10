@@ -1,53 +1,71 @@
 import React from 'react';
-import { Calendar, CheckCircle, Clock, Users, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { Calendar, CheckCircle, Clock, Users, TrendingUp, ArrowUpRight } from 'lucide-react';
 import FullCalendarView from './FullCalendarView';
 
 function Dashboard({ onAppointmentClick }) {
   try {
     const stats = [
-      { label: 'Total Appointments', value: '3', change: '+12%', trend: 'up', icon: Calendar, color: 'blue' },
-      { label: 'Completed Today', value: '1', change: '+5', trend: 'up', icon: CheckCircle, color: 'green' },
-      { label: 'Pending', value: '5', change: '2 urgent', trend: 'neutral', icon: Clock, color: 'orange' },
-      { label: 'Total Patients', value: '10', change: '+8%', trend: 'up', icon: Users, color: 'purple' }
+      { 
+        label: 'Total Appointments', 
+        value: '3', 
+        change: '+12%', 
+        subtitle: '8 active today',
+        icon: Calendar, 
+        gradient: 'bg-gradient-blue' 
+      },
+      { 
+        label: 'Completed Today', 
+        value: '1', 
+        change: '+5.2%', 
+        subtitle: '1 completed',
+        icon: CheckCircle, 
+        gradient: 'bg-gradient-green' 
+      },
+      { 
+        label: 'Pending', 
+        value: '5', 
+        change: 'Current', 
+        subtitle: '2 urgent cases',
+        icon: Clock, 
+        gradient: 'bg-gradient-blue-purple' 
+      },
+      { 
+        label: 'Total Patients', 
+        value: '10', 
+        change: '+8.1%', 
+        subtitle: 'Active patients',
+        icon: Users, 
+        gradient: 'bg-gradient-purple' 
+      }
     ];
 
     return (
-      <div className="space-y-5" data-name="dashboard" data-file="components/Dashboard.js">
+      <div className="space-y-6" data-name="dashboard" data-file="components/Dashboard.js">
         <div className="grid grid-cols-4 gap-5">
           {stats.map((stat, idx) => {
             const IconComponent = stat.icon;
-            const TrendIcon = stat.trend === 'up' ? TrendingUp : stat.trend === 'down' ? TrendingDown : Minus;
             return (
-              <div key={idx} className={`card stat-card cursor-pointer group relative overflow-hidden ${
-                stat.color === 'blue' ? 'border-l-4 border-l-blue-500 bg-gradient-to-br from-blue-50 to-blue-100' :
-                stat.color === 'green' ? 'border-l-4 border-l-green-500 bg-gradient-to-br from-green-50 to-green-100' :
-                stat.color === 'orange' ? 'border-l-4 border-l-orange-500 bg-gradient-to-br from-orange-50 to-orange-100' :
-                'border-l-4 border-l-purple-500 bg-gradient-to-br from-purple-50 to-purple-100'
-              }`}>
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`flex items-center space-x-1 px-2.5 py-1 rounded-full shadow-sm ${
-                    stat.trend === 'up' ? 'bg-green-100 shadow-green-100' : stat.trend === 'down' ? 'bg-red-100 shadow-red-100' : 'bg-orange-100 shadow-orange-100'
-                  }`}>
-                    <TrendIcon className={`text-xs ${
-                      stat.trend === 'up' ? 'text-green-700' : stat.trend === 'down' ? 'text-red-700' : 'text-orange-700'
-                    }`} />
-                    <span className={`text-xs font-semibold ${
-                      stat.trend === 'up' ? 'text-green-700' : stat.trend === 'down' ? 'text-red-700' : 'text-orange-700'
-                    }`}>
-                      {stat.change}
-                    </span>
+              <div 
+                key={idx} 
+                className={`metric-card ${stat.gradient} cursor-pointer`}
+              >
+                <div className="gradient-overlay"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="bg-white/20 p-2.5 rounded-lg backdrop-blur-sm">
+                      <IconComponent className="w-5 h-5 text-white" />
+                    </div>
+                    {stat.change.includes('%') && (
+                      <div className="flex items-center gap-1 bg-white/20 px-2.5 py-1 rounded-full backdrop-blur-sm">
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                        <span className="text-xs font-semibold">{stat.change}</span>
+                      </div>
+                    )}
                   </div>
+                  <p className="text-sm font-medium text-white/90 mb-1">{stat.label}</p>
+                  <h3 className="text-4xl font-bold mb-1">{stat.value}</h3>
+                  <p className="text-xs text-white/70">{stat.subtitle}</p>
                 </div>
-                <p className={`text-xs mb-2 uppercase font-semibold tracking-wide ${
-                  stat.color === 'blue' ? 'text-blue-700' :
-                  stat.color === 'green' ? 'text-green-700' :
-                  stat.color === 'orange' ? 'text-orange-700' : 'text-purple-700'
-                }`}>{stat.label}</p>
-                <h3 className={`text-3xl font-bold ${
-                  stat.color === 'blue' ? 'text-blue-900' :
-                  stat.color === 'green' ? 'text-green-900' :
-                  stat.color === 'orange' ? 'text-orange-900' : 'text-purple-900'
-                }`}>{stat.value}</h3>
               </div>
             );
           })}
@@ -55,6 +73,13 @@ function Dashboard({ onAppointmentClick }) {
 
         <div className="space-y-6">
           <div className="card">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold text-text-dark">Schedule Overview</h2>
+              <div className="flex gap-2">
+                <button className="btn-secondary text-sm">Today</button>
+                <button className="btn-primary text-sm">Week</button>
+              </div>
+            </div>
             <FullCalendarView onAppointmentClick={onAppointmentClick} />
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, Bell, User, ChevronDown, LogOut, Check, X } from 'lucide-react';
+import { Search, Bell, User, LogOut, Check } from 'lucide-react';
 
 function Header({ currentView, onShowProfile }) {
   try {
@@ -29,28 +29,12 @@ function Header({ currentView, onShowProfile }) {
         time: '2 hours ago',
         read: true,
         type: 'prescription'
-      },
-      {
-        id: 4,
-        title: 'System Maintenance',
-        message: 'Scheduled maintenance will occur tonight from 11 PM to 1 AM',
-        time: '1 day ago',
-        read: true,
-        type: 'system'
       }
     ]);
-
-    const today = new Date().toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
 
     const unreadCount = notifications.filter(n => !n.read).length;
 
     const handleSignOut = () => {
-      // Handle sign out logic here
       console.log('Signing out...');
       setShowDropdown(false);
     };
@@ -74,16 +58,6 @@ function Header({ currentView, onShowProfile }) {
       );
     };
 
-    const getNotificationIcon = (type) => {
-      switch (type) {
-        case 'appointment': return '📅';
-        case 'lab': return '🧪';
-        case 'prescription': return '💊';
-        case 'system': return '⚙️';
-        default: return '🔔';
-      }
-    };
-
     const getTitle = () => {
       switch(currentView) {
         case 'dashboard': return 'Dashboard';
@@ -91,45 +65,50 @@ function Header({ currentView, onShowProfile }) {
         case 'analytics': return 'Practice Analytics';
         case 'settings': return 'Settings';
         case 'consultation': return 'Virtual Consultation';
+        case 'appointments': return 'Appointments';
         default: return 'Dashboard';
       }
     };
 
     return (
-      <header className="bg-white px-8 py-6 border-b border-border-color" data-name="header" data-file="components/Header.js">
+      <header className="bg-white px-8 py-4 border-b border-border-color" data-name="header" data-file="components/Header.js">
         <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-3xl font-bold text-text-dark">{getTitle()}</h2>
-            <div className="text-sm text-text-muted mt-2 flex items-center space-x-2">
-              <Calendar className="text-xs" />
-              <span>{today}</span>
+          <div className="flex items-center flex-1 max-w-2xl">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-muted" />
+              <input
+                type="text"
+                placeholder="Search here..."
+                className="w-full pl-10 pr-4 py-2.5 bg-bg-light border border-transparent rounded-lg text-sm focus:outline-none focus:border-arcus-blue-400 focus:ring-2 focus:ring-arcus-blue-100 transition-all"
+              />
             </div>
           </div>
 
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-3">
+            <button className="px-4 py-2 bg-arcus-blue-50 text-arcus-blue-600 rounded-lg text-sm font-medium hover:bg-arcus-blue-100 transition-all">
+              {getTitle()}
+            </button>
 
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2.5 hover:bg-gray-50 rounded-lg transition-all"
+                className="relative p-2.5 hover:bg-bg-light rounded-lg transition-all"
               >
-                <Bell className="text-xl text-text-muted" />
+                <Bell className="w-5 h-5 text-text-muted" />
                 {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
-                    {unreadCount}
-                  </span>
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-arcus-red-500 rounded-full"></span>
                 )}
               </button>
 
               {showNotifications && (
-                <div className="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-xl border border-border-color z-50 max-h-96 overflow-y-auto">
+                <div className="absolute right-0 mt-2 w-96 bg-white rounded-xl shadow-arcus-lg border border-border-color z-50 max-h-96 overflow-y-auto">
                   <div className="p-4 border-b border-border-color">
                     <div className="flex items-center justify-between">
                       <h3 className="font-semibold text-text-dark">Notifications</h3>
                       {unreadCount > 0 && (
                         <button
                           onClick={markAllAsRead}
-                          className="text-sm text-primary hover:text-primary-dark font-medium"
+                          className="text-sm text-arcus-blue-600 hover:text-arcus-blue-700 font-medium"
                         >
                           Mark all read
                         </button>
@@ -146,49 +125,31 @@ function Header({ currentView, onShowProfile }) {
                       notifications.map((notification) => (
                         <div
                           key={notification.id}
-                          className={`p-4 hover:bg-gray-50 transition-all ${
-                            !notification.read ? 'bg-blue-50 border-l-4 border-blue-500' : ''
+                          className={`p-4 hover:bg-bg-light transition-all cursor-pointer ${
+                            !notification.read ? 'bg-arcus-blue-50' : ''
                           }`}
+                          onClick={() => markAsRead(notification.id)}
                         >
-                          <div className="flex items-start space-x-3">
-                            <div className="text-lg">{getNotificationIcon(notification.type)}</div>
+                          <div className="flex items-start justify-between gap-3">
                             <div className="flex-1 min-w-0">
-                              <div className="flex items-start justify-between">
-                                <h4 className={`text-sm font-medium truncate ${
-                                  !notification.read ? 'text-text-dark' : 'text-text-muted'
-                                }`}>
-                                  {notification.title}
-                                </h4>
-                                {!notification.read && (
-                                  <button
-                                    onClick={() => markAsRead(notification.id)}
-                                    className="ml-2 p-1 hover:bg-gray-200 rounded transition-all"
-                                    title="Mark as read"
-                                  >
-                                    <Check className="text-xs text-green-600" />
-                                  </button>
-                                )}
-                              </div>
-                              <p className={`text-sm mt-1 ${
+                              <h4 className={`text-sm font-medium ${
                                 !notification.read ? 'text-text-dark' : 'text-text-muted'
                               }`}>
+                                {notification.title}
+                              </h4>
+                              <p className="text-sm text-text-muted mt-1">
                                 {notification.message}
                               </p>
                               <p className="text-xs text-text-muted mt-2">{notification.time}</p>
                             </div>
+                            {!notification.read && (
+                              <div className="w-2 h-2 bg-arcus-blue-500 rounded-full mt-1 flex-shrink-0"></div>
+                            )}
                           </div>
                         </div>
                       ))
                     )}
                   </div>
-
-                  {notifications.length > 0 && (
-                    <div className="p-3 border-t border-border-color text-center">
-                      <button className="text-sm text-primary hover:text-primary-dark font-medium">
-                        View all notifications
-                      </button>
-                    </div>
-                  )}
                 </div>
               )}
             </div>
@@ -196,32 +157,27 @@ function Header({ currentView, onShowProfile }) {
             <div className="relative">
               <button
                 onClick={() => setShowDropdown(!showDropdown)}
-                className="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded-lg transition-all"
+                className="flex items-center gap-2 p-1.5 hover:bg-bg-light rounded-lg transition-all"
               >
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-semibold text-sm">
-                  JS
+                <div className="w-9 h-9 rounded-full bg-gradient-blue flex items-center justify-center text-white font-semibold text-sm shadow-arcus-blue">
+                  JG
                 </div>
-                <div className="flex-1 text-left">
-                  <p className="font-semibold text-sm text-text-dark">Dr. John Gondo</p>
-                  <p className="text-xs text-text-muted">Cardiologist</p>
-                </div>
-                <ChevronDown className={`text-lg text-text-muted transition-transform ${showDropdown ? 'rotate-180' : ''}`} />
               </button>
 
               {showDropdown && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-border-color z-50">
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-arcus-lg border border-border-color z-50">
                   <button
                     onClick={handleProfileClick}
-                    className="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-50 rounded-t-lg transition-all"
+                    className="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-bg-light rounded-t-xl transition-all"
                   >
-                    <User className="text-lg text-text-muted" />
+                    <User className="w-4 h-4 text-text-muted" />
                     <span className="text-sm font-medium">Profile</span>
                   </button>
                   <button
                     onClick={handleSignOut}
-                    className="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-red-50 text-red-600 rounded-b-lg transition-all"
+                    className="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-arcus-red-50 text-arcus-red-600 rounded-b-xl transition-all"
                   >
-                    <LogOut className="text-lg" />
+                    <LogOut className="w-4 h-4" />
                     <span className="text-sm font-medium">Sign Out</span>
                   </button>
                 </div>

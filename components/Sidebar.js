@@ -12,43 +12,42 @@ function Sidebar({ currentView, setCurrentView }) {
     ];
 
     return (
-      <div className="w-64 bg-white flex flex-col" data-name="sidebar" data-file="components/Sidebar.js">
-        <div className="p-6 border-b border-border-color">
+      <div className="w-64 bg-white flex flex-col border-r border-border-color" data-name="sidebar" data-file="components/Sidebar.js">
+        <div className="p-6">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-              <Hospital className="text-xl text-white" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-blue flex items-center justify-center shadow-arcus-blue">
+              <Hospital className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-sm font-bold text-text-dark">Parirenyatwa</h1>
+              <h1 className="text-lg font-bold text-text-dark">ARCUS</h1>
               <p className="text-xs text-text-muted">Hospital Portal</p>
             </div>
           </div>
         </div>
 
-        <nav className="flex-1 p-4">
-          {menuItems.map(item => {
-            const IconComponent = item.icon;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setCurrentView(item.id)}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl mb-2 transition-all ${
-                  currentView === item.id
-                    ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-primary font-semibold shadow-sm'
-                    : 'text-text-muted hover:bg-gray-50 hover:text-text-dark font-medium'
-                }`}
-              >
-                <IconComponent className={`text-xl ${currentView === item.id ? 'scale-110' : ''} transition-transform`} />
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
+        <nav className="flex-1 px-4 py-2">
+          <div className="space-y-1">
+            {menuItems.map(item => {
+              const IconComponent = item.icon;
+              const isActive = currentView === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setCurrentView(item.id)}
+                  className={`sidebar-item w-full ${isActive ? 'active' : ''}`}
+                >
+                  <IconComponent className="w-5 h-5" />
+                  <span className="text-sm font-medium">{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </nav>
 
         <div className="p-4 border-t border-border-color mt-auto">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-semibold text-sm">
-              JS
+          <div className="flex items-center space-x-3 p-2">
+            <div className="w-10 h-10 rounded-full bg-gradient-blue flex items-center justify-center text-white font-semibold text-sm shadow-arcus-blue">
+              JG
             </div>
             <div className="flex-1">
               <p className="font-semibold text-sm text-text-dark">Dr. John Gondo</p>
