@@ -1,3 +1,5 @@
+import React from 'react';
+
 function AvailabilityModal({ onClose }) {
   try {
     const [availabilitySlots, setAvailabilitySlots] = React.useState([
@@ -43,13 +45,16 @@ function AvailabilityModal({ onClose }) {
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" data-name="availability-modal" data-file="components/AvailabilityModal.js">
-        <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-bold">Manage Availability</h3>
-            <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
-              <div className="icon-x text-xl text-[var(--text-muted)]"></div>
-            </button>
+        <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-6 rounded-t-xl">
+            <div className="flex items-center justify-between">
+              <h3 className="text-2xl font-bold text-white">Manage Availability</h3>
+              <button onClick={onClose} className="p-2 hover:bg-white hover:bg-opacity-20 rounded-lg transition-all">
+                <div className="icon-x text-xl text-white"></div>
+              </button>
+            </div>
           </div>
+          <div className="p-6">
 
           <div className="space-y-6">
             {/* Current Availability Slots */}
@@ -144,6 +149,7 @@ function AvailabilityModal({ onClose }) {
               </button>
             </div>
           </div>
+        </div>
         </div>
       </div>
     );
