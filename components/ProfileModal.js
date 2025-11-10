@@ -1,4 +1,4 @@
- import React from 'react';
+import React from 'react';
 import { X, Mail, Phone, MapPin, Calendar, Award } from 'lucide-react';
 
 function ProfileModal({ onClose }) {
@@ -18,27 +18,26 @@ function ProfileModal({ onClose }) {
     };
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" data-name="profile-modal" data-file="components/ProfileModal.js">
-        <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-          <div className="flex items-center justify-between mb-6">
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" data-name="profile-modal" data-file="components/ProfileModal.js">
+        <div className="bg-white rounded-xl shadow-arcus-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="sticky top-0 bg-white border-b border-border-color px-6 py-4 rounded-t-xl flex items-center justify-between">
             <h3 className="text-2xl font-bold text-text-dark">Doctor Profile</h3>
-            <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
-              <X className="text-xl text-text-muted" />
+            <button onClick={onClose} className="p-2 hover:bg-bg-light rounded-lg transition-all">
+              <X className="w-5 h-5 text-text-muted" />
             </button>
           </div>
 
-          <div className="space-y-6">
-            {/* Profile Header */}
-            <div className="flex items-start space-x-4 pb-6 border-b border-border-color">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-2xl">
+          <div className="p-6 space-y-6">
+            <div className="flex items-start gap-4 p-6 bg-gradient-to-r from-arcus-blue-50 to-arcus-purple-50 rounded-xl">
+              <div className="w-20 h-20 rounded-full bg-gradient-blue flex items-center justify-center text-white font-bold text-2xl shadow-arcus-blue">
                 {doctorProfile.name.split(' ').map(n => n[0]).join('')}
               </div>
               <div className="flex-1">
                 <h4 className="text-2xl font-bold text-text-dark">{doctorProfile.name}</h4>
-                <p className="text-lg text-primary font-medium">{doctorProfile.specialty}</p>
-                <p className="text-sm text-text-muted">License: {doctorProfile.license}</p>
-                <div className="flex items-center space-x-2 mt-2">
-                  <Calendar className="text-sm text-text-muted" />
+                <p className="text-lg text-arcus-blue-600 font-medium">{doctorProfile.specialty}</p>
+                <p className="text-sm text-text-muted mt-1">License: {doctorProfile.license}</p>
+                <div className="flex items-center gap-2 mt-2">
+                  <Calendar className="w-4 h-4 text-text-muted" />
                   <span className="text-sm text-text-muted">
                     Joined {new Date(doctorProfile.joinDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}
                   </span>
@@ -46,59 +45,56 @@ function ProfileModal({ onClose }) {
               </div>
             </div>
 
-            {/* Contact Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-3">
-                <h5 className="font-semibold text-text-dark">Contact Information</h5>
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-3">
-                    <Mail className="text-lg text-text-muted" />
-                    <span className="text-sm">{doctorProfile.email}</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <h5 className="font-semibold text-text-dark text-lg">Contact Information</h5>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 p-3 bg-bg-light rounded-lg">
+                    <Mail className="w-5 h-5 text-arcus-blue-500" />
+                    <span className="text-sm text-text-dark">{doctorProfile.email}</span>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    <Phone className="text-lg text-text-muted" />
-                    <span className="text-sm">{doctorProfile.phone}</span>
+                  <div className="flex items-center gap-3 p-3 bg-bg-light rounded-lg">
+                    <Phone className="w-5 h-5 text-arcus-green-500" />
+                    <span className="text-sm text-text-dark">{doctorProfile.phone}</span>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    <MapPin className="text-lg text-text-muted" />
-                    <span className="text-sm">{doctorProfile.address}</span>
+                  <div className="flex items-center gap-3 p-3 bg-bg-light rounded-lg">
+                    <MapPin className="w-5 h-5 text-arcus-red-500" />
+                    <span className="text-sm text-text-dark">{doctorProfile.address}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <h5 className="font-semibold text-text-dark">Professional Information</h5>
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-3">
-                    <Award className="text-lg text-text-muted" />
-                    <span className="text-sm">{doctorProfile.experience} experience</span>
+              <div className="space-y-4">
+                <h5 className="font-semibold text-text-dark text-lg">Professional Information</h5>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 p-3 bg-bg-light rounded-lg">
+                    <Award className="w-5 h-5 text-arcus-purple-500" />
+                    <span className="text-sm text-text-dark">{doctorProfile.experience} experience</span>
                   </div>
-                  <div className="text-sm">
-                    <p className="font-medium text-text-dark">Education:</p>
-                    <p className="text-text-muted">{doctorProfile.education}</p>
+                  <div className="p-3 bg-bg-light rounded-lg">
+                    <p className="font-medium text-text-dark text-sm mb-1">Education:</p>
+                    <p className="text-text-muted text-sm">{doctorProfile.education}</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Certifications */}
             <div>
               <h5 className="font-semibold text-text-dark mb-3">Certifications</h5>
               <div className="flex flex-wrap gap-2">
                 {doctorProfile.certifications.map((cert, idx) => (
-                  <span key={idx} className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">
+                  <span key={idx} className="px-3 py-1.5 bg-arcus-blue-100 text-arcus-blue-700 rounded-lg text-sm font-medium">
                     {cert}
                   </span>
                 ))}
               </div>
             </div>
 
-            {/* Languages */}
             <div>
               <h5 className="font-semibold text-text-dark mb-3">Languages</h5>
               <div className="flex flex-wrap gap-2">
                 {doctorProfile.languages.map((lang, idx) => (
-                  <span key={idx} className="px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm">
+                  <span key={idx} className="px-3 py-1.5 bg-arcus-green-100 text-arcus-green-700 rounded-lg text-sm font-medium">
                     {lang}
                   </span>
                 ))}

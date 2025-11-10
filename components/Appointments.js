@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, X, CheckCircle, XCircle, Settings, Video } from 'lucide-react';
+import { Calendar, Clock, X, CheckCircle, XCircle, Settings, Video, User } from 'lucide-react';
 import AvailabilityManagement from './AvailabilityManagement';
 
 function Appointments({ onAppointmentClick }) {
@@ -81,100 +81,97 @@ function Appointments({ onAppointmentClick }) {
     const cancelledAppointments = appointments.filter(apt => apt.status === 'cancelled');
 
     const tabs = [
-      { id: 'pending', label: `Pending Requests (${pendingAppointments.length})`, icon: Clock },
-      { id: 'cancelled', label: `Cancelled (${cancelledAppointments.length})`, icon: X },
+      { id: 'pending', label: 'Pending Requests', count: pendingAppointments.length, icon: Clock },
+      { id: 'cancelled', label: 'Cancelled', count: cancelledAppointments.length, icon: X },
       { id: 'availability', label: 'Availability', icon: Settings }
     ];
 
     return (
-      <div data-name="appointments" data-file="components/Appointments.js">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-text-dark mb-2">Appointments Management</h2>
-          <p className="text-text-muted">Manage your appointments, view calendar, and handle requests</p>
+      <div className="space-y-6" data-name="appointments" data-file="components/Appointments.js">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-text-dark">Appointments Management</h2>
+            <p className="text-text-muted mt-1">Manage your appointments, view calendar, and handle requests</p>
+          </div>
+          <button className="btn-primary flex items-center gap-2">
+            <Calendar className="w-4 h-4" />
+            View Calendar
+          </button>
         </div>
 
         <div className="card">
-          <div className="flex items-center justify-between mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-xl border-b border-border-color">
-            <div className="flex space-x-1">
-              {tabs.map(tab => {
-                const IconComponent = tab.icon;
-                const isActive = activeTab === tab.id;
-                const hasCount = tab.label.includes('(');
+          <div className="flex items-center gap-3 mb-6 border-b border-border-color pb-4">
+            {tabs.map(tab => {
+              const IconComponent = tab.icon;
+              const isActive = activeTab === tab.id;
 
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`relative flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
-                      isActive
-                        ? 'bg-white text-primary shadow-md transform scale-105'
-                        : 'text-text-muted hover:text-text-dark hover:bg-white/50'
-                    }`}
-                  >
-                    <IconComponent className={`text-lg ${isActive ? 'text-primary' : ''}`} />
-                    <span className={isActive ? 'font-semibold' : ''}>{tab.label}</span>
-                    {hasCount && !isActive && (
-                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
-                        {tab.label.match(/\((\d+)\)/)?.[1] || '0'}
-                      </span>
-                    )}
-                    {isActive && (
-                      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-primary rounded-full"></div>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="text-sm text-text-muted">
-              {activeTab === 'pending' && 'Review and respond to appointment requests'}
-              {activeTab === 'cancelled' && 'View cancelled appointment history'}
-              {activeTab === 'availability' && 'Manage your availability and schedule'}
-            </div>
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium transition-all ${
+                    isActive
+                      ? 'bg-gradient-blue text-white shadow-arcus-blue'
+                      : 'text-text-muted hover:bg-arcus-blue-50 hover:text-arcus-blue-600'
+                  }`}
+                >
+                  <IconComponent className="w-4 h-4" />
+                  <span>{tab.label}</span>
+                  {tab.count !== undefined && tab.count > 0 && (
+                    <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
+                      isActive ? 'bg-white/20' : 'bg-arcus-orange-100 text-arcus-orange-700'
+                    }`}>
+                      {tab.count}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
 
-          <div className="min-h-[600px]">
-
+          <div className="min-h-[500px]">
             {activeTab === 'pending' && (
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-text-dark">Pending Appointment Requests</h3>
                 {pendingAppointments.length === 0 ? (
-                  <div className="text-center py-8 text-text-muted">
-                    <Clock className="text-4xl mx-auto mb-4 opacity-50" />
-                    <p>No pending appointment requests</p>
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-arcus-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Clock className="w-8 h-8 text-arcus-blue-500" />
+                    </div>
+                    <p className="text-text-muted font-medium">No pending appointment requests</p>
+                    <p className="text-sm text-text-muted mt-1">New requests will appear here</p>
                   </div>
                 ) : (
                   pendingAppointments.map(appointment => (
-                    <div key={appointment.id} className="flex items-center justify-between p-4 border border-border-color rounded-lg hover:bg-gray-50">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-semibold text-sm">
+                    <div key={appointment.id} className="flex items-center justify-between p-4 bg-gradient-to-r from-arcus-blue-50 to-white border border-arcus-blue-100 rounded-xl hover:shadow-arcus transition-all">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-full bg-gradient-blue flex items-center justify-center text-white font-semibold text-sm shadow-arcus-blue">
                           {appointment.patient.split(' ').map(n => n[0]).join('')}
                         </div>
                         <div>
                           <h4 className="font-semibold text-text-dark">{appointment.patient}</h4>
                           <p className="text-sm text-text-muted">{appointment.type}</p>
-                          <p className="text-xs text-text-muted">
-                            {appointment.date} at {appointment.time}
-                          </p>
-                          <p className="text-xs text-text-muted">
-                            Requested: {new Date(appointment.requestedAt).toLocaleDateString()}
-                          </p>
+                          <div className="flex items-center gap-3 mt-1">
+                            <p className="text-xs text-text-muted flex items-center gap-1">
+                              <Calendar className="w-3 h-3" />
+                              {appointment.date} at {appointment.time}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex space-x-2">
+                      <div className="flex gap-2">
                         <button
                           onClick={() => handleAcceptAppointment(appointment.id)}
-                          className="flex items-center space-x-2 px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-all"
+                          className="flex items-center gap-2 px-4 py-2 bg-arcus-green-100 text-arcus-green-700 rounded-lg hover:bg-arcus-green-200 transition-all font-medium"
                         >
-                          <CheckCircle className="text-sm" />
-                          <span className="text-sm font-medium">Accept</span>
+                          <CheckCircle className="w-4 h-4" />
+                          Accept
                         </button>
                         <button
                           onClick={() => handleCancelAppointment(appointment.id)}
-                          className="flex items-center space-x-2 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-all"
+                          className="flex items-center gap-2 px-4 py-2 bg-arcus-red-100 text-arcus-red-700 rounded-lg hover:bg-arcus-red-200 transition-all font-medium"
                         >
-                          <XCircle className="text-sm" />
-                          <span className="text-sm font-medium">Cancel</span>
+                          <XCircle className="w-4 h-4" />
+                          Decline
                         </button>
                       </div>
                     </div>
@@ -185,33 +182,27 @@ function Appointments({ onAppointmentClick }) {
 
             {activeTab === 'cancelled' && (
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-text-dark">Cancelled Appointments</h3>
                 {cancelledAppointments.length === 0 ? (
-                  <div className="text-center py-8 text-text-muted">
-                    <X className="text-4xl mx-auto mb-4 opacity-50" />
-                    <p>No cancelled appointments</p>
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <X className="w-8 h-8 text-gray-400" />
+                    </div>
+                    <p className="text-text-muted font-medium">No cancelled appointments</p>
                   </div>
                 ) : (
                   cancelledAppointments.map(appointment => (
-                    <div key={appointment.id} className="flex items-center justify-between p-4 border border-red-200 bg-red-50 rounded-lg">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center text-white font-semibold text-sm">
+                    <div key={appointment.id} className="flex items-center justify-between p-4 bg-gray-50 border border-gray-200 rounded-xl">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-semibold text-sm">
                           {appointment.patient.split(' ').map(n => n[0]).join('')}
                         </div>
                         <div>
-                          <h4 className="font-semibold text-text-dark">{appointment.patient}</h4>
-                          <p className="text-sm text-text-muted">{appointment.type}</p>
-                          <p className="text-xs text-text-muted">
-                            {appointment.date} at {appointment.time}
-                          </p>
-                          <p className="text-xs text-red-600">
-                            Cancelled by {appointment.cancelledBy} on {new Date(appointment.cancelledAt).toLocaleDateString()}
-                          </p>
+                          <h4 className="font-semibold text-gray-700">{appointment.patient}</h4>
+                          <p className="text-sm text-gray-500">{appointment.type}</p>
+                          <p className="text-xs text-gray-500">{appointment.date} at {appointment.time}</p>
                         </div>
                       </div>
-                      <div className="text-red-600">
-                        <XCircle className="text-xl" />
-                      </div>
+                      <span className="status-cancelled">Cancelled</span>
                     </div>
                   ))
                 )}
