@@ -19,7 +19,7 @@ function Sidebar({ currentView, setCurrentView }) {
               <Hospital className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-text-dark">ARCUS</h1>
+              <h1 className="text-lg font-bold text-text-dark">Parirenyatwa</h1>
               <p className="text-xs text-text-muted">Hospital Portal</p>
             </div>
           </div>
@@ -44,17 +44,7 @@ function Sidebar({ currentView, setCurrentView }) {
           </div>
         </nav>
 
-        <div className="p-4 border-t border-border-color mt-auto">
-          <div className="flex items-center space-x-3 p-2">
-            <div className="w-10 h-10 rounded-full bg-gradient-blue flex items-center justify-center text-white font-semibold text-sm shadow-arcus-blue">
-              JG
-            </div>
-            <div className="flex-1">
-              <p className="font-semibold text-sm text-text-dark">Dr. John Gondo</p>
-              <p className="text-xs text-text-muted">Cardiologist</p>
-            </div>
-          </div>
-        </div>
+       
       </div>
     );
   } catch (error) {

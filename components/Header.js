@@ -159,8 +159,12 @@ function Header({ currentView, onShowProfile }) {
                 onClick={() => setShowDropdown(!showDropdown)}
                 className="flex items-center gap-2 p-1.5 hover:bg-bg-light rounded-lg transition-all"
               >
-                <div className="w-9 h-9 rounded-full bg-gradient-blue flex items-center justify-center text-white font-semibold text-sm shadow-arcus-blue">
-                  JG
+                <div className="w-9 h-9 rounded-full bg-gradient-blue flex items-center justify-center text-white font-semibold text-sm shadow-arcus-blue overflow-hidden">
+                  <img
+                    src="https://img.freepik.com/free-photo/african-american-black-doctor-man-with-stethoscope-isolated-white-background_231208-2222.jpg?semt=ais_hybrid&w=740&q=80"
+                    alt="Doctor Profile"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </button>
 

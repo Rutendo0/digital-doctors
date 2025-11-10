@@ -29,8 +29,12 @@ function ProfileModal({ onClose }) {
 
           <div className="p-6 space-y-6">
             <div className="flex items-start gap-4 p-6 bg-gradient-to-r from-arcus-blue-50 to-arcus-purple-50 rounded-xl">
-              <div className="w-20 h-20 rounded-full bg-gradient-blue flex items-center justify-center text-white font-bold text-2xl shadow-arcus-blue">
-                {doctorProfile.name.split(' ').map(n => n[0]).join('')}
+              <div className="w-20 h-20 rounded-full bg-gradient-blue flex items-center justify-center text-white font-bold text-2xl shadow-arcus-blue overflow-hidden">
+                <img
+                  src="https://img.freepik.com/free-photo/african-american-black-doctor-man-with-stethoscope-isolated-white-background_231208-2222.jpg?semt=ais_hybrid&w=740&q=80"
+                  alt="Doctor Profile"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="flex-1">
                 <h4 className="text-2xl font-bold text-text-dark">{doctorProfile.name}</h4>

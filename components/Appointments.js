@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, X, CheckCircle, XCircle, Settings, Video, User } from 'lucide-react';
+import { Calendar, Clock, X, CheckCircle, XCircle, Settings, Video, User, ArrowLeft } from 'lucide-react';
 import AvailabilityManagement from './AvailabilityManagement';
+import FullCalendarView from './FullCalendarView';
 
 function Appointments({ onAppointmentClick }) {
   try {
     const [activeTab, setActiveTab] = useState('pending');
+    const [showCalendar, setShowCalendar] = useState(false);
 
     const [appointments, setAppointments] = useState([
       {
@@ -86,6 +88,25 @@ function Appointments({ onAppointmentClick }) {
       { id: 'availability', label: 'Availability', icon: Settings }
     ];
 
+    if (showCalendar) {
+      return (
+        <div className="space-y-6" data-name="appointments" data-file="components/Appointments.js">
+          <div className="flex items-center justify-between mb-6">
+            <button
+              onClick={() => setShowCalendar(false)}
+              className="flex items-center gap-2 px-4 py-2 text-arcus-blue-600 hover:bg-arcus-blue-50 rounded-lg transition-all"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Appointments
+            </button>
+            <h2 className="text-2xl font-bold text-text-dark">Appointment Calendar</h2>
+            <div></div>
+          </div>
+          <FullCalendarView onAppointmentClick={onAppointmentClick} />
+        </div>
+      );
+    }
+
     return (
       <div className="space-y-6" data-name="appointments" data-file="components/Appointments.js">
         <div className="flex items-center justify-between">
@@ -93,7 +114,10 @@ function Appointments({ onAppointmentClick }) {
             <h2 className="text-2xl font-bold text-text-dark">Appointments Management</h2>
             <p className="text-text-muted mt-1">Manage your appointments, view calendar, and handle requests</p>
           </div>
-          <button className="btn-primary flex items-center gap-2">
+          <button
+            onClick={() => setShowCalendar(true)}
+            className="btn-primary flex items-center gap-2"
+          >
             <Calendar className="w-4 h-4" />
             View Calendar
           </button>
